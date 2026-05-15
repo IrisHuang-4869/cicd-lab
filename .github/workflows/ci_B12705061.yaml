@@ -29,10 +29,12 @@ jobs:
       - name: Prettier format check
         run: npm run format:check
 
+      - name: Create reports directory
+        if: always()
+        run: mkdir -p reports
+
       - name: Run tests
-        run: |
-          mkdir -p reports
-          npm test -- --reporter=default --reporter=junit --outputFile.junit=reports/vitest-junit.xml
+        run: npm test -- --reporter=default --reporter=junit --outputFile.junit=reports/vitest-junit.xml
 
       - name: Publish test results
         if: always()
@@ -41,6 +43,7 @@ jobs:
           report_paths: reports/vitest-junit.xml
           check_name: Vitest Test Results
           fail_on_failure: true
+          ignore_missing_files: true
 
       - name: Upload test report artifact
         if: always()
@@ -48,4 +51,4 @@ jobs:
         with:
           name: test-report
           path: reports/
-          if-no-files-found: error
+          if-no-files-found: warn
