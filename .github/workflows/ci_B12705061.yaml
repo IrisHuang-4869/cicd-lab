@@ -9,6 +9,9 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
 
     steps:
       - name: Checkout code
@@ -43,7 +46,6 @@ jobs:
           report_paths: reports/vitest-junit.xml
           check_name: Vitest Test Results
           fail_on_failure: true
-          ignore_missing_files: true
 
       - name: Upload test report artifact
         if: always()
